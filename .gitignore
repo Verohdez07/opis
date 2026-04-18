@@ -1,0 +1,24 @@
+# entorno virtual
+.venv/
+venv/
+env/
+
+# cache de python
+__pycache__/
+*.py[cod]
+
+# ide
+.idea/
+.vscode/
+
+# datos sismicos (pueden ser pesados)
+*.sac
+*.SAC
+*.mseed
+*.miniseed
+
+# streamlit
+.streamlit/secrets.toml
+
+# mac
+.DS_Store
