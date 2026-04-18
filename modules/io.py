@@ -26,3 +26,54 @@ def load_data(file):
         "starttime": tr.stats.starttime,
         "sac": tr.stats.get("sac", {}),
     }
+
+
+def read_pz_files(station, base_path="data/pz"):
+    filename = f"{station}.PZ"
+    filepath = os.path.join(base_path, filename)
+
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"No se encontró archivo PZ para la estación {station}")
+
+    poles = []
+    zeros = []
+    constant = None
+
+    with open(filepath, "r") as f:
+        lines = f.readlines()
+
+    mode = None
+
+    for line in lines:
+        raw_line = line.strip()
+        line = raw_line.lower()
+
+        if not line or line.startswith("*"):
+            continue
+
+        if "zeros" in line:
+            mode = "zeros"
+            continue
+        elif "poles" in line:
+            mode = "poles"
+            continue
+        elif "constant" in line:
+            constant = float(raw_line.split()[-1])
+            continue
+
+        parts = raw_line.split()
+
+        if mode == "zeros":
+            zeros.append(complex(float(parts[0]), float(parts[1])))
+
+        elif mode == "poles":
+            poles.append(complex(float(parts[0]), float(parts[1])))
+
+    paz = {
+        "poles": poles,
+        "zeros": zeros,
+        "gain": 1.0,
+        "sensitivity": constant
+    }
+
+    return paz
