@@ -16,7 +16,7 @@ __pycache__/
 *.SAC
 *.mseed
 *.miniseed
-
+data/*
 # streamlit
 .streamlit/secrets.toml
 
