@@ -24,8 +24,6 @@ with st.expander("Cargar archivo", expanded=True):
         st.session_state.data = component
 
 data = st.session_state.data
-# print(f"La variable data es {data}")
-scale_mode = st.toggle("Escala normalizada", value=True)
 col_left, col_right = st.columns([2, 1], gap="medium")
 
 with col_left:
@@ -33,7 +31,7 @@ with col_left:
         for comp in data:
             channel = comp["channel"]
             st.plotly_chart(
-                plot_waveform(comp,scale_mode=scale_mode),
+                plot_waveform(comp),
                 width="stretch",
                 key=f"wave_{channel}"
             )
@@ -43,13 +41,10 @@ with col_right:
 
     if st.button("Quitar respuesta instrumental"):
         data_pz = read_pz_files(data[0]['station'])
-        print(f"data_pz es : {data_pz}")
         for i in range(len(data)):
             data[i] = remove_response_from_dict(data[i], data_pz)
-            
-        print(f"Esta es data {data}")
         st.session_state.data = data
-        st.success("Respuesta instrumental removida")
+        st.rerun()
 
     if st.button("Obtener magnitud", width="stretch"):
         pass  # TODO

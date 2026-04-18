@@ -2,57 +2,34 @@ import numpy as np
 import plotly.graph_objects as go
 
 
-def plot_waveform(data, p_pick=None, s_pick=None, scale_mode=True):
+def plot_waveform(data, p_pick=None, s_pick=None):
     fig = go.Figure()
 
-    y_label = "Amplitud"
-
     if data is not None:
-        amp = data["amplitude"]
-
-        if scale_mode:
-            max_amp = np.max(np.abs(amp))
-            if max_amp > 0:
-                amp = amp / max_amp
-            y_label = "Amplitud (normalizada)"
-        else:
-            y_label = "Amplitud (m/s)"
-
         fig.add_trace(go.Scatter(
             x=data["time"],
-            y=amp,
+            y=data["amplitude"],
             mode="lines",
             line=dict(color="#2196F3", width=1)
         ))
 
         if p_pick is not None:
-            fig.add_vline(
-                x=p_pick,
-                line_color="#4CAF50",
-                line_dash="dash",
-                annotation_text="P",
-                annotation_font_color="#4CAF50"
-            )
-
+            fig.add_vline(x=p_pick, line_color="#4CAF50", line_dash="dash",
+                          annotation_text="P", annotation_font_color="#4CAF50")
         if s_pick is not None:
-            fig.add_vline(
-                x=s_pick,
-                line_color="#F44336",
-                line_dash="dash",
-                annotation_text="S",
-                annotation_font_color="#F44336"
-            )
+            fig.add_vline(x=s_pick, line_color="#F44336", line_dash="dash",
+                          annotation_text="S", annotation_font_color="#F44336")
 
     fig.update_layout(
         title=f"{data['station']} - {data['channel']}" if data else "Sin datos",
         xaxis_title="Tiempo (s)",
-        yaxis_title=y_label,
+        yaxis_title="Cuentas",
         template="plotly_dark",
         height=350,
         margin=dict(l=50, r=20, t=40, b=40)
     )
-
     return fig
+
 def plot_epicenter_map(lat=0.0, lon=0.0):
     fig = go.Figure(go.Scattergeo(
         lat=[lat], lon=[lon],
