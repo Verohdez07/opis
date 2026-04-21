@@ -1,5 +1,6 @@
 import tempfile
 import os
+import json
 
 
 def load_data(file):
@@ -25,6 +26,7 @@ def load_data(file):
         "network": tr.stats.network,
         "starttime": tr.stats.starttime,
         "sac": tr.stats.get("sac", {}),
+        "response_removed": False,
     }
 
 
@@ -77,3 +79,24 @@ def read_pz_files(station, base_path="data/pz"):
     }
 
     return paz
+
+
+def save_picks(station, starttime, picks, out_dir="data"):
+    os.makedirs(out_dir, exist_ok=True)
+    fecha = starttime.strftime("%Y%m%d_%H%M%S")
+    filename = f"{station}_{fecha}_picks.json"
+    filepath = os.path.join(out_dir, filename)
+
+    payload = {
+        "station": station,
+        "starttime": starttime.isoformat(),
+        "picks": {
+            "P": picks["P"],
+            "S": picks["S"]
+        }
+    }
+
+    with open(filepath, "w") as f:
+        json.dump(payload, f, indent=2)
+
+    return filepath

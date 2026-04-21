@@ -41,13 +41,12 @@ opis/
     ├── io.py           carga de archivos SAC
     ├── plotting.py     graficos con plotly
     ├── picking.py      deteccion de fases P y S
-    └── inversion.py    calculo de magnitud y respuesta instrumental
 ```
 
 ## Estado actual
 
 - Carga de archivos SAC via obspy
-- Visualizacion de forma de onda, espectro y espectrograma
+- Visualizacion de forma de onda, espectro
 - Mapa de epicentro con coordenadas manuales
 - Picking e inversion pendientes de implementar
 

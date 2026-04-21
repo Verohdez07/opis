@@ -12,4 +12,5 @@ def remove_response_from_dict(comp, paz):
     )
 
     comp["amplitude"] = tr.data
+    comp["response_removed"] = True
     return comp
